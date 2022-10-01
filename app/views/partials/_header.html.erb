@@ -1,0 +1,43 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <!-- Navbar brand -->
+    <%= link_to "Home", root_path, class: "navbar-brand" %>
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarButtonsExample"
+      aria-controls="navbarButtonsExample"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <% if account_signed_in? %>
+      <div class="collapse navbar-collapse" id="navbarButtonsExample">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item ">
+            <%= link_to 'My Todos', todo_items_path, class:"text-light"%>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <%= link_to "Sign out", destroy_account_session_path, method: :delete, class:"btn btn-outline-info px-3 me-2" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="collapse navbar-collapse" id="navbarButtonsExample">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item ">
+            &nbsp;
+          </li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <%= link_to "Login", new_account_session_path, class:"btn btn-outline-primary px-3 me-2" %>
+          <%= link_to "Sign up", new_account_registration_path, class:"btn btn-outline-danger me-3" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</nav>
