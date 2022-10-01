@@ -32,6 +32,17 @@ RSpec.describe '/todo_items', type: :request do
     end
   end
 
+  describe 'GET /show' do
+    it 'renders a successful response' do
+      sign_in(current_account)
+      todo_item = TodoItem.new(valid_attributes)
+      todo_item.account = current_account
+      todo_item.save
+      get todo_items_url(todo_item)
+      expect(response).to be_successful
+    end
+  end
+
   describe 'GET /new' do
     it 'renders a successful response' do
       sign_in(current_account)
@@ -91,6 +102,16 @@ RSpec.describe '/todo_items', type: :request do
         expect(todoItem[:title]).to eq(new_attributes["title"])
         expect(todoItem[:is_completed]).to eq(true)
       end
+
+      it 'redirects to the todo_item' do
+        sign_in(current_account)
+        todoItem = TodoItem.new(valid_attributes)
+        todoItem.account = current_account
+        todoItem.save
+        patch todo_item_url(todoItem), params: { todo_item: new_attributes }
+        todoItem.reload
+        expect(response).to redirect_to(todo_item_url(todoItem))
+      end
     end
   end
 
@@ -103,6 +124,15 @@ RSpec.describe '/todo_items', type: :request do
       expect do
         delete todo_item_url(todoItem)
       end.to change(TodoItem, :count).by(-1)
+    end
+
+    it 'redirects to the todo_items list' do
+      sign_in(current_account)
+      todoItem = TodoItem.new(valid_attributes)
+      todoItem.account = current_account
+      todoItem.save
+      delete todo_item_url(todoItem)
+      expect(response).to redirect_to(todo_items_url)
     end
   end
 
